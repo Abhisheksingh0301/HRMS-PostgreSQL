@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link href="/tailwind/output.css" rel="stylesheet">
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans text-gray-800 px-10 py-6">
+    <div class="max-w-3xl mx-auto border border-gray-300 px-10 py-6 rounded-lg">
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-extrabold">
+                <%= heading %>
+            </h1>
+            <p class="text-lg">Employee Name: <%= data.length > 0 ? data[0].emp_name : 'N/A' %></p>
+            <p class="text-lg">Department: <%= dept %></p>
+            <p class="text-lg">Report Period: <%= moment(stdate).format("DD-MMM-YYYY") %> to <%= moment(enddate).format("DD-MMM-YYYY") %></p>
+        </div>
+
+        <table class="w-full border-collapse border border-gray-300 my-6">
+            <thead style="background-color: #E5E7E1;">
+                <tr>
+                    <th class="border border-gray-400 p-2 text-left px-4 w-auto">Sl no.</th>
+                    <th class="border border-gray-400 p-2 text-left">Date</th>
+                    <th class="border border-gray-400 p-2 text-left">Leave category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (var i=0; i<data.length; i++){ %>
+                <tr>
+                    <td class="border text-center border-gray-300 p-2"><%= i+1 %></td>
+                    <td class="border border-gray-300 p-2">
+                        <% const leaveDate = moment(data[i].leave_date); 
+                            let formattedDate = leaveDate.format("dddd, MMMM Do YYYY"); 
+                            if (leaveDate.day() === 6) { 
+                                formattedDate += ' *'; 
+                            } %>
+                        <%= formattedDate %>
+                    </td>
+                    <td class="border border-gray-300 p-2"><%= data[i].Leave.leave_desc %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <div class="text-center mt-6 text-sm text-gray-600">
+            <p><b>Total number of leaves: <%= totalRecords %></b></p>
+            <p>Report Generated on: <%= moment(curdt).format("MMMM DD, YYYY") %></p>
+            <p class="text-xs">© 2024 Abhishek Kumar Singh</p>
+            <p class="no-print">Print this report using the print function in your browser.</p>
+        </div>
+    </div>
+</body>
+
+</html>
